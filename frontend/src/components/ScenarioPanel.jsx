@@ -145,7 +145,10 @@ export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioSt
               className={styles.resetBtn}
               title="Reset progress for this scenario"
               onClick={async () => {
-                if (!window.confirm(`Reset progress for "${scenario.title}"?`)) return
+                const msg = scenario.type === 'task'
+                  ? `Reset progress and cluster state for "${scenario.title}"?\n\nThis will run teardown to clean the environment.`
+                  : `Reset progress for "${scenario.title}"?`
+                if (!window.confirm(msg)) return
                 await resetProgress('scenario', { scenarioId: scenario.id })
                 setSelectedOption(null)
                 setMcqResult(null)
@@ -153,6 +156,9 @@ export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioSt
                 setSetupState('idle')
                 setHintsRevealed([])
                 onProgressUpdate()
+                if (scenario.type === 'task') {
+                  await fetch(`/api/scenarios/${scenario.id}/teardown`, { method: 'POST' }).catch(() => {})
+                }
               }}
             >
               ↺ Reset
