@@ -371,9 +371,6 @@
       },
       {
         "command": "kubectl delete pvc local-pvc --ignore-not-found"
-      },
-      {
-        "command": "kubectl delete pv local-pv --ignore-not-found"
       }
     ]
   },
@@ -1215,7 +1212,7 @@
     "default_namespace": "default",
     "teardown_commands": [
       {
-        "command": "kubectl taint nodes k8s-lab env:NoSchedule- 2>/dev/null || true"
+        "command": "kubectl taint nodes k8s-lab env=gpu:NoSchedule- 2>/dev/null || true"
       },
       {
         "command": "kubectl delete pod gpu-pod --ignore-not-found --grace-period=0 --force"
@@ -3910,12 +3907,12 @@
     "difficulty": "Medium",
     "type": "task",
     "weight": 6,
-    "description": "## PodDisruptionBudget\n\nA **PodDisruptionBudget (PDB)** limits the number of pods of a replicated application that are down simultaneously during voluntary disruptions (node drains, cluster upgrades). It is a critical CKA topic.\n\n**Your task:**\n\nA Deployment named `web-app` with **3 replicas** is already running. Create a **PodDisruptionBudget** named `web-pdb` in the `default` namespace that:\n- Applies to pods with the label `app=web-app`\n- Ensures **at least 2 pods** are always available (`minAvailable: 2`)\n\n```bash\n# Verify:\nkubectl get pdb web-pdb\n```",
+    "description": "## PodDisruptionBudget\n\nA **PodDisruptionBudget (PDB)** limits the number of pods of a replicated application that are down simultaneously during voluntary disruptions (node drains, cluster upgrades). It is a critical CKA topic.\n\n**Your task:**\n\nA Deployment named `pdb-app` with **3 replicas** is already running. Create a **PodDisruptionBudget** named `web-pdb` in the `default` namespace that:\n- Applies to pods with the label `app=pdb-app`\n- Ensures **at least 2 pods** are always available (`minAvailable: 2`)\n\n```bash\n# Verify:\nkubectl get pdb web-pdb\n```",
     "hints": [
       {
         "title": "PodDisruptionBudget manifest",
         "body": "Use `spec.minAvailable` (integer or percentage) and `spec.selector.matchLabels` to target the right pods.",
-        "command": "cat <<EOF | kubectl apply -f -\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: web-pdb\nspec:\n  minAvailable: 2\n  selector:\n    matchLabels:\n      app: web-app\nEOF"
+        "command": "cat <<EOF | kubectl apply -f -\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: web-pdb\nspec:\n  minAvailable: 2\n  selector:\n    matchLabels:\n      app: pdb-app\nEOF"
       },
       {
         "title": "Check the PDB status",
@@ -3925,10 +3922,10 @@
     ],
     "setup_commands": [
       {
-        "command": "kubectl create deployment web-app --image=nginx:alpine --replicas=3 2>/dev/null || true"
+        "command": "kubectl create deployment pdb-app --image=nginx:alpine --replicas=3 2>/dev/null || true"
       },
       {
-        "command": "kubectl rollout status deployment/web-app --timeout=90s"
+        "command": "kubectl rollout status deployment/pdb-app --timeout=90s"
       }
     ],
     "validation": {
@@ -3946,14 +3943,14 @@
           "match": "exact"
         },
         {
-          "description": "PDB selector targets app=web-app",
+          "description": "PDB selector targets app=pdb-app",
           "command": "kubectl get pdb web-pdb -o jsonpath='{.spec.selector.matchLabels.app}'",
-          "expected_output": "web-app",
+          "expected_output": "pdb-app",
           "match": "exact"
         },
         {
-          "description": "Deployment 'web-app' has 3 replicas",
-          "command": "kubectl get deployment web-app -o jsonpath='{.spec.replicas}'",
+          "description": "Deployment 'pdb-app' has 3 replicas",
+          "command": "kubectl get deployment pdb-app -o jsonpath='{.spec.replicas}'",
           "expected_output": "3",
           "match": "exact"
         }
@@ -3965,7 +3962,7 @@
         "command": "kubectl delete pdb web-pdb --ignore-not-found"
       },
       {
-        "command": "kubectl delete deployment web-app --ignore-not-found"
+        "command": "kubectl delete deployment pdb-app --ignore-not-found"
       }
     ]
   },
