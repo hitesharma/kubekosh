@@ -39,6 +39,8 @@ Open **http://localhost:7554** — wait ~30 seconds for the *Cluster Ready* indi
 
 > `--privileged` is required — K3s needs access to kernel namespaces and cgroups.
 
+> **Security Warning:** Do **not** expose this container publicly. Use it only on your local machine as it is meant for educational purposes only.
+
 ### Persist Progress
 
 ```bash
@@ -115,8 +117,8 @@ Everything runs inside a **single Docker image** managed by `scripts/entrypoint.
 
 ```
 scenarios/
-├── data/             # One JSON file per scenario  → <id>.json
-├── bundles/          # One JSON file per bundle    → <id>.json
+├── data/             # One JSON file per scenario  -> <scenario-id>.json
+├── bundles/          # One JSON file per bundle    -> <bundle-id>.json
 └── SCHEMA.md         # Full schema reference
 
 backend/
@@ -126,7 +128,7 @@ frontend/
 └── src/              # React + Vite SPA
 
 scripts/
-├── entrypoint.sh     # Container startup (k3s → API → nginx)
+├── entrypoint.sh     # Container startup (k3s -> API -> nginx)
 └── nginx.conf        # Reverse-proxy config
 ```
 
