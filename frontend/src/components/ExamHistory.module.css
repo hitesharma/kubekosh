@@ -430,6 +430,15 @@
   border-radius: 3px;
   flex-shrink: 0;
 }
+.rowTime {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+  flex-shrink: 0;
+  min-width: 52px;
+  display: flex;
+  align-items: center;
+}
 .rowPts {
   font-family: var(--mono);
   font-size: 11px;

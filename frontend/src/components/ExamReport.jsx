@@ -10,6 +10,14 @@ function formatDuration(secs) {
   return `${s}s`
 }
 
+function formatRowTime(secs) {
+  if (!secs || secs === 0) return '—'
+  const m = Math.floor(secs / 60)
+  const s = secs % 60
+  if (m > 0) return `${m}m ${s > 0 ? s + 's' : ''}`.trim()
+  return `${s}s`
+}
+
 const DIFF_COLOR = { Easy: 'var(--green)', Medium: 'var(--amber)', Hard: 'var(--red)' }
 
 export default function ExamReport({ report, bundle, onClose, onRetry }) {
@@ -85,6 +93,15 @@ export default function ExamReport({ report, bundle, onClose, onRetry }) {
                   <span className={styles.rowTitle}>{s.title}</span>
                   <span className={styles.rowDiff} style={{ color: DIFF_COLOR[s.difficulty] }}>
                     {s.difficulty}
+                  </span>
+                  <span className={styles.rowTime}>
+                    {s.time_spent_seconds > 0 && (
+                      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 3, verticalAlign: 'middle', opacity: 0.6 }}>
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                      </svg>
+                    )}
+                    {formatRowTime(s.time_spent_seconds)}
                   </span>
                   <span className={styles.rowPts}>{s.status === 'completed' ? s.weight : 0}/{s.weight} pts</span>
                 </div>

@@ -344,12 +344,16 @@ app.post('/api/sessions/:id/submit', (req, res) => {
   const examProgressMap = {};
   for (const r of examProgressRows) examProgressMap[r.scenario_id] = r;
 
+  // Also pull time_spent_seconds from global progress (tracked per scenario during the exam)
+  const globalProgress = loadProgress();
+
   const snapshot = bundleScenarios.map(s => ({
     id: s.id, title: s.title, weight: s.weight,
     category: s.category, type: s.type, difficulty: s.difficulty,
     status: examProgressMap[s.id]?.status || 'not_started',
     completed_at: examProgressMap[s.id]?.completed_at || null,
     attempts: examProgressMap[s.id]?.attempts || 0,
+    time_spent_seconds: globalProgress[s.id]?.time_spent_seconds || 0,
   }));
   const startedAt = new Date(session.started_at + 'Z');
   const durationSecs = Math.round((Date.now() - startedAt.getTime()) / 1000);
