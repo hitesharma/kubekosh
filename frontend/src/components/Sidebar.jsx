@@ -109,16 +109,18 @@ export default function Sidebar({
       {/* Filter bar */}
       {!collapsed && (
         <div className={styles.filterBar}>
-          <select 
-            value={filterDiff} 
-            onChange={e => setFilterDiff(e.target.value)}
-            className={`${styles.selectFilter} ${filterDiff !== 'All' ? styles[DIFF_COLOR[filterDiff]] : ''}`}
-          >
-            <option value="All">All Difficulties</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
+          {!isExamMode && (
+            <select 
+              value={filterDiff} 
+              onChange={e => setFilterDiff(e.target.value)}
+              className={`${styles.selectFilter} ${filterDiff !== 'All' ? styles[DIFF_COLOR[filterDiff]] : ''}`}
+            >
+              <option value="All">All Difficulties</option>
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
+          )}
           <select 
             value={filterType} 
             onChange={e => setFilterType(e.target.value)}
@@ -210,9 +212,11 @@ export default function Sidebar({
                             )}
                           </div>
                           <div className={styles.itemMeta}>
-                            <span className={`${styles.diff} ${styles[DIFF_COLOR[s.difficulty]]}`}>
-                              {s.difficulty}
-                            </span>
+                            {!isExamMode && (
+                              <span className={`${styles.diff} ${styles[DIFF_COLOR[s.difficulty]]}`}>
+                                {s.difficulty}
+                              </span>
+                            )}
                             <span className={`${styles.type} ${styles[s.type]}`}>{s.type.toUpperCase()}</span>
                             {!isExamMode && <span className={styles.weight}>{s.weight}pt</span>}
                             {isExamMode && examDone && (

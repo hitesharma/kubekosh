@@ -201,9 +201,11 @@ export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioSt
       <div className={styles.scenarioHeader}>
         <div className={styles.scenarioMeta}>
           <span className={styles.category}>{scenario.category}</span>
-          <span className={`${styles.diff} ${styles[scenario.difficulty?.toLowerCase()]}`}>
-            {scenario.difficulty}
-          </span>
+          {!isExamMode && (
+            <span className={`${styles.diff} ${styles[scenario.difficulty?.toLowerCase()]}`}>
+              {scenario.difficulty}
+            </span>
+          )}
           <span className={styles.typeTag}>{scenario.type === 'mcq' ? 'Multiple Choice' : 'Hands-on Task'}</span>
           {!isExamMode && <span className={styles.weight}>{scenario.weight} pts</span>}
         </div>
