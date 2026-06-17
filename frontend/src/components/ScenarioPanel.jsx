@@ -24,7 +24,7 @@ async function resetProgress(scope, opts) {
   })
 }
 
-export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioStart, isExamMode, examProgress, totalExamWeight }) {
+export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioStart, isExamMode, examProgress, totalExamWeight, focusMode, onToggleFocus }) {
   const [tab, setTab] = useState('problem')
   const [setupState, setSetupState] = useState('idle') // idle | running | done | error
   const [validating, setValidating] = useState(false)
@@ -216,6 +216,29 @@ export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioSt
         </div>
         <div className={styles.titleRow}>
           <div className={styles.scenarioTitle}>{scenario.title}</div>
+          {onToggleFocus && !isExamMode && (
+            <button
+              className={focusMode ? styles.focusBtnActive : styles.focusBtn}
+              onClick={onToggleFocus}
+              title={focusMode ? 'Exit focus mode' : 'Focus mode — hide sidebar, terminal & nav'}
+            >
+              {focusMode ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="4 14 10 14 10 20" />
+                  <polyline points="20 10 14 10 14 4" />
+                  <line x1="10" y1="14" x2="3" y2="21" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+              )}
+            </button>
+          )}
           {isExamMode && scenario.progress?.started_at && (
             <div className={styles.progressStats}>
               <div className={styles.statItem}>
@@ -237,6 +260,29 @@ export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioSt
                 </span>
               </div>
             </div>
+          )}
+          {onToggleFocus && isExamMode && (
+            <button
+              className={focusMode ? styles.focusBtnActive : styles.focusBtn}
+              onClick={onToggleFocus}
+              title={focusMode ? 'Exit focus mode' : 'Focus mode — hide sidebar, terminal & nav'}
+            >
+              {focusMode ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="4 14 10 14 10 20" />
+                  <polyline points="20 10 14 10 14 4" />
+                  <line x1="10" y1="14" x2="3" y2="21" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+              )}
+            </button>
           )}
           {scenario.progress?.status !== 'not_started' && scenario.progress?.attempts > 0 && (
             <button

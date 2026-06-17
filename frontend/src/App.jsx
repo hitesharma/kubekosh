@@ -54,6 +54,36 @@ export default function App() {
   const tmDragY0 = useRef(0)
   const tmDragH0 = useRef(0)
 
+  // Focus mode — collapses sidebar, bundles nav, terminal for distraction-free reading
+  const [focusMode, setFocusMode] = useState(false)
+  const focusSavedState = useRef(null)
+
+  const toggleFocusMode = useCallback(() => {
+    if (!focusMode) {
+      // Save current states then collapse everything
+      focusSavedState.current = { sidebarCollapsed, bundlesCollapsed, termCollapsed }
+      setSidebarCollapsed(true)
+      setBundlesCollapsed(true)
+      setTermCollapsed(true)
+      setFocusMode(true)
+    } else {
+      // Restore previous states
+      const saved = focusSavedState.current || {}
+      setSidebarCollapsed(saved.sidebarCollapsed ?? false)
+      setBundlesCollapsed(saved.bundlesCollapsed ?? false)
+      setTermCollapsed(saved.termCollapsed ?? false)
+      setFocusMode(false)
+    }
+  }, [focusMode, sidebarCollapsed, bundlesCollapsed, termCollapsed])
+
+  // If the user manually opens any panel while in focus mode, exit focus mode
+  // so the button icon reverts to "expand" (next click re-collapses everything)
+  useEffect(() => {
+    if (focusMode && (!sidebarCollapsed || !bundlesCollapsed || !termCollapsed)) {
+      setFocusMode(false)
+    }
+  }, [sidebarCollapsed, bundlesCollapsed, termCollapsed, focusMode])
+
   // Track previous scenario id to teardown on switch
   const prevActiveIdRef = useRef(null)
 
@@ -330,6 +360,8 @@ export default function App() {
               isExamMode={!!examSession}
               examProgress={examProgress}
               totalExamWeight={totalExamWeight}
+              focusMode={focusMode}
+              onToggleFocus={toggleFocusMode}
             />
           </div>
 
