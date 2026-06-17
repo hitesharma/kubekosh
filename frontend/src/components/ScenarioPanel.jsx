@@ -287,7 +287,7 @@ export default function ScenarioPanel({ scenario, onProgressUpdate, onScenarioSt
               )}
             </button>
           )}
-          {scenario.progress?.status !== 'not_started' && scenario.progress?.attempts > 0 && (
+          {!isExamMode && scenario.progress?.status !== 'not_started' && scenario.progress?.attempts > 0 && (
             <button
               className={styles.resetBtn}
               title="Reset progress for this scenario"
