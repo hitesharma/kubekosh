@@ -8,6 +8,7 @@ import ExamTimer from './components/ExamTimer'
 import ExamReport from './components/ExamReport'
 import ExamStartModal from './components/ExamStartModal'
 import ExamHistory from './components/ExamHistory'
+import AddonsView from './components/AddonsView'
 import styles from './App.module.css'
 
 const MIN_SIDEBAR_W = 180
@@ -22,6 +23,7 @@ const DEFAULT_TERM_H = 280
 const TERM_COLLAPSE_PX = 60
 
 export default function App() {
+  const [showAddons, setShowAddons] = useState(false)  // addons popup
   const [bundles, setBundles] = useState([])
   const [activeBundleId, setActiveBundleId] = useState(null)
 
@@ -302,7 +304,11 @@ export default function App() {
 
   return (
     <div className={styles.app}>
-      <Header clusterReady={clusterReady} onShowHistory={() => setShowHistory(true)} />
+      <Header
+        clusterReady={clusterReady}
+        onShowHistory={() => setShowHistory(true)}
+        onShowAddons={() => setShowAddons(true)}
+      />
 
       {/* Bundle navigation bar */}
       <BundleNav
@@ -407,6 +413,11 @@ export default function App() {
       {/* Exam history modal */}
       {showHistory && (
         <ExamHistory onClose={() => setShowHistory(false)} />
+      )}
+
+      {/* Addons modal */}
+      {showAddons && (
+        <AddonsView onClose={() => setShowAddons(false)} />
       )}
 
       <footer className={styles.footer}>
