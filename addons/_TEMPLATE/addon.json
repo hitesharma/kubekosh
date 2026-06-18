@@ -1,0 +1,21 @@
+{
+  "id": "my-addon",
+  "name": "My Addon",
+  "description": "One-sentence summary of what this tool does and why a learner would install it.",
+  "category": "Uncategorized",
+  "icon": "📦",
+  "target": "os",
+  "version": "1.0.0",
+  "docs_url": "https://example.com",
+  "est_seconds": 30,
+  "arch_support": ["amd64", "arm64"],
+  "tags": [],
+  "dependencies": [],
+  "setup_commands": [
+    { "command": "echo 'replace with real install commands'", "label": "Installing My Addon" }
+  ],
+  "teardown_commands": [
+    { "command": "echo 'replace with real removal commands'", "label": "Removing My Addon" }
+  ],
+  "health_command": "command -v my-addon"
+}
