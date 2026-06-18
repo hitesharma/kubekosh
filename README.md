@@ -18,12 +18,11 @@ KubeKosh runs a real [K3s](https://k3s.io/) Kubernetes cluster inside a single D
 
 ## Screenshots
 
-| | |
-|---|---|
-| ![Scenario browser with live terminal](screenshots/1.png) | ![Task scenario with problem statement](screenshots/2.png) |
-| ![Contextual hints with copy-ready commands](screenshots/3.png) | ![Automated validation — all checks passed](screenshots/4.png) |
-| ![Exam mode — start with custom duration](screenshots/5.png) | ![Exam mode - live exam with timer](screenshots/6.png) |
-| ![Multiple-choice question view](screenshots/7.png) | ![MCQ with correct answer and explanation](screenshots/8.png) |
+| | | |
+|---|---|---|
+| ![Scenario browser with live terminal](screenshots/1.png) | ![Task scenario with problem statement](screenshots/2.png) | ![Contextual hints with copy-ready commands](screenshots/3.png) |
+| ![Automated validation — all checks passed](screenshots/4.png) | ![Exam mode — start with custom duration and scenario count](screenshots/5.png) | ![Exam mode — live exam with timer](screenshots/6.png) |
+| ![Exam MCQ — selecting an answer](screenshots/7.png) | ![Exam MCQ — correct answer with explanation](screenshots/8.png) | ![Exam history with per-scenario score report](screenshots/9.png) |
 
 ---
 
