@@ -66,7 +66,7 @@ export default function Sidebar({
     if (s) setOpen(o => ({ ...o, [s.category]: true }))
   }, [activeId, scenarios])
 
-  const toggle = cat => setOpen(o => ({ ...o, [cat]: !o[cat] }))
+  const toggle = cat => setOpen(o => ({ ...o, [cat]: o[cat] !== false ? false : true }))
 
   const totalDone = isExamMode
     ? scenarios.filter(s => examProgress?.[s.id]?.status === 'completed').length
