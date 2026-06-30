@@ -9,6 +9,7 @@ import ExamReport from './components/ExamReport'
 import ExamStartModal from './components/ExamStartModal'
 import ExamHistory from './components/ExamHistory'
 import AddonsView from './components/AddonsView'
+import { useAddons } from './components/useAddons'
 import styles from './App.module.css'
 
 const MIN_SIDEBAR_W = 180
@@ -24,6 +25,7 @@ const TERM_COLLAPSE_PX = 60
 
 export default function App() {
   const [showAddons, setShowAddons] = useState(false)  // addons popup
+  const { addons, refresh: refreshAddons } = useAddons()
   const [bundles, setBundles] = useState([])
   const [activeBundleId, setActiveBundleId] = useState(null)
 
@@ -101,6 +103,19 @@ export default function App() {
     const t = setInterval(check, 8000)
     return () => clearInterval(t)
   }, [])
+
+  // ── Addon status polling (drives dashboard buttons in Header) ─────────────
+  // Fast-poll while any addon is in a transient state so the header buttons
+  // appear the moment an install completes, without a page refresh.
+  useEffect(() => {
+    const busy = addons.some(a =>
+      ['queued', 'installing', 'removing'].includes(a.status)
+    )
+    const ms = busy ? 2500 : 15000
+    const t = setInterval(refreshAddons, ms)
+    return () => clearInterval(t)
+  }, [addons, refreshAddons])
+
 
   // ── Load bundles (once) ───────────────────────────────────────────────────
   useEffect(() => {
@@ -308,6 +323,7 @@ export default function App() {
         clusterReady={clusterReady}
         onShowHistory={() => setShowHistory(true)}
         onShowAddons={() => setShowAddons(true)}
+        addons={addons}
       />
 
       {/* Bundle navigation bar */}

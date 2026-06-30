@@ -4,7 +4,7 @@
   "description": "Cloud-native ingress controller and reverse proxy with automatic service discovery, middlewares, and a built-in dashboard. Installed via Helm into the traefik namespace; the dashboard is served under the base path /traefik and reachable at http://<host>:7554/traefik via the KubeKosh proxy.",
   "category": "Networking",
   "icon": "🚦",
-  "logo": "https://github.com/traefik.png",
+  "logo": "https://upload.wikimedia.org/wikipedia/commons/1/1b/Traefik.logo.png",
   "target": "cluster",
   "version": "3.7.5",
   "docs_url": "https://doc.traefik.io/traefik/",
